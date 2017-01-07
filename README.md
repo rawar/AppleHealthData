@@ -1,5 +1,6 @@
 # AppleHealthData
-Python Script to Parse Apple Watch and Apple Health data from the export.xml
+Python Script to Parse Apple Watch and Apple Health data from the Exportieren.xml file.
+The script creates a CSV file from the XML data. 
 
 See link for getting the data off your iPhone: 
 

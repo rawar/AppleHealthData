@@ -1,17 +1,19 @@
 #!/usr/bin/python
-#Simple Python script to parse Apple Health Values out of the export.xml into a pipe delimited txt file
+# Simple Python script to parse Apple Health Values out of the export.xml into a pipe delimited txt file
+# Modify the script to generate a CSV file as output format
 
 import re, sys, os, datetime
 from datetime import datetime
+import csv
 
-# Assumes you run the script in same location as the exported data
-healthlog = open("export.xml","r")
+# Assumes you run the script in same location as the exported data. 
+# In German version of Apple Health the file is called 'Exportieren.xml'
+healthlog = open("Exportieren.xml","r")
 
-# Open Parsed results file
-healthresults = open("AppleHealthData.txt","w")
-
-#Create Header row 
-healthresults.write("DateTime|Source|HealthType|HealthValue\n")
+# Open Parsed results csv file
+healthresults = open("AppleHealthData.csv","w")
+writer = csv.writer(healthresults, delimiter=',')
+writer.writerow(["DateTime", "Source", "HealthType", "HealthValue"])
 
 # Initi counter
 count =0
@@ -22,7 +24,7 @@ valdic ={}
 sourcedic ={}
 
 #determine number of lines in export.xml
-num_lines = sum(1 for line in open("export.xml"))
+num_lines = sum(1 for line in open("Exportieren.xml"))
 
 FMT = '%Y-%m-%d %H:%M:%S'
 
@@ -59,7 +61,12 @@ for line in healthlog:
 		datetime2val = datetime2.group()
 
 		# Output results to file
-		healthresults.write(str(datetime2val[9:] + "|" + sourceNameval[12:] + "|" + recordtypeval[15:-1] + "|" + healthdataval[7:] +" \n"))
+		row = []
+                row.append(str(datetime2val[9:]))
+                row.append(str(sourceNameval[12:]))
+                row.append(str(recordtypeval[15:-1]))
+                row.append(str(healthdataval[7:]))
+                writer.writerow(row)
 		count = count +1
 
 
